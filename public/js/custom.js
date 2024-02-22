@@ -1,3 +1,5 @@
+
+
 // Receber o id do campo
 let inputValor = document.getElementById('valor');
 
@@ -17,3 +19,21 @@ inputValor.addEventListener('input', function() {
     // Atualizar o valor no campo
     this.value = formattedValor;
 });
+
+function comfirmarExclusao(event, contaId){
+    event.preventDefault();
+    Swal.fire({
+       title: "Tem certeza?",
+       text: 'Você não podera reverter isso!',
+       icon: 'warning', 
+       showCancelButton: true,
+       cancelButtonColor: '#0d6efd',
+       cancelButtonText: 'Cancelar',
+       confirmButtonColor: '#dc3545',
+       confirmButtonText: 'Sim,excluir!',
+    }).then((result) =>{
+        if(result.isConfirmed){
+            document.getElementById('formExcluir' + contaId).submit();
+        }
+    })
+};

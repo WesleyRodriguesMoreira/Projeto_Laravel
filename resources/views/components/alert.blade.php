@@ -1,24 +1,17 @@
-{{--Página de aletas utilizando SweetAlert2--}}
-
+{{-- Página de aletas utilizando SweetAlert2 --}}
 @if (session()->has('success'))
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        Swal.fire('Pronto!', "{{ session('success') }}", 'success');
-    })
-</script>
-
-@elseif($errors->any())
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            Swal.fire('Pronto!', "{{ session('success') }}", 'success');
+        });
+    </script>
+@elseif ($errors->any())
     @php
-        $mensagem = '';
-        foreach ($errors->all() as $error){
-            $mensagem .= $error .  '<br>';
-        }
+        $mensagem = implode('<br>', $errors->all());
     @endphp
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             Swal.fire('Error!', "{!! $mensagem !!}", 'error');
-        })
+        });
     </script>
-   
-
 @endif

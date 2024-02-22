@@ -1,5 +1,4 @@
 <?php
-
 namespace Database\Seeders;
 
 use App\Models\Conta;
@@ -23,7 +22,7 @@ class ContaSeeder extends Seeder
 
         if(!Conta::where('nome','Internet')->first()){
             Conta::create([
-                'nome' => 'Energia',
+                'nome' => 'Internet', // Corrigido para 'Internet'
                 'valor' => '147.52',
                 'vencimento' => '2023-12-23',
             ]);
@@ -53,9 +52,9 @@ class ContaSeeder extends Seeder
             ]);
         }
 
-        if(!Conta::where('nome','Acadermia')->first()){
+        if(!Conta::where('nome','Academia')->first()){ // Corrigido para 'Academia'
             Conta::create([
-                'nome' => 'Acadermia',
+                'nome' => 'Academia', // Corrigido para 'Academia'
                 'valor' => '55.00',
                 'vencimento' => '2023-12-31',
             ]);
