@@ -10,19 +10,8 @@
             </span>
         </div>
 
-        {{-- Verificar se existe a sessão success e imprimir o valor --}}
-        @if (session('success'))
-        <div class="alert alert-success m-3" role="alert">
-            {{ session('success') }}
-          </div><br>
-        @endif
-
-        {{-- Verificar se existe a sessão error e imprimir o valor --}}
-        @if (session('error'))
-        <div class="alert alert-danger m-3" role="alert">
-            {{ session('error') }}
-          </div><br>
-        @endif
+        {{-- Aletar de sucesso ou erro --}}
+        <x-alert />
 
         <div class="card-body">
             <dl class="row">
@@ -36,13 +25,16 @@
                 <dd class="col-sm-9">{{ 'R$ ' . number_format($conta->valor, 2, ',', '.') }}</dd>
 
                 <dt class="col-sm-3">VENCIMENTO:</dt>
-                <dd class="col-sm-9">{{ \Carbon\Carbon::parse($conta->vencimento)->tz('America/Sao_Paulo')->format('d/m/Y') }}</dd>
+                <dd class="col-sm-9">
+                    {{ \Carbon\Carbon::parse($conta->vencimento)->tz('America/Sao_Paulo')->format('d/m/Y') }}</dd>
 
                 <dt class="col-sm-3">DATA DE CADASTRO:</dt>
-                <dd class="col-sm-9">{{ \Carbon\Carbon::parse($conta->created_at)->tz('America/Sao_Paulo')->format('d/m/Y H:i:s') }}</dd>
+                <dd class="col-sm-9">
+                    {{ \Carbon\Carbon::parse($conta->created_at)->tz('America/Sao_Paulo')->format('d/m/Y H:i:s') }}</dd>
 
                 <dt class="col-sm-3">ÚLTIMA EDIÇÃO:</dt>
-                <dd class="col-sm-9">{{ \Carbon\Carbon::parse($conta->updated_at)->tz('America/Sao_Paulo')->format('d/m/Y H:i:s') }}</dd>
+                <dd class="col-sm-9">
+                    {{ \Carbon\Carbon::parse($conta->updated_at)->tz('America/Sao_Paulo')->format('d/m/Y H:i:s') }}</dd>
             </dl>
         </div>
     </div>

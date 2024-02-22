@@ -38,6 +38,7 @@
         @yield('content')
     </div>
     <script src="{{ asset('js/custom.js') }}"></script>
+    {{-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> --}}
 </body>
 
 </html>

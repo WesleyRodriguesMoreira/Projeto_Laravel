@@ -33,10 +33,10 @@ class ContaRequest extends FormRequest
     public function messages(): array
     {
        return[
-        'nome.required' => 'Campo nome é obrigatório',
-        'valor.required' => 'Campo valor é obrigatório',
-        'valor.max' => 'Campo valor  só pode te no máximo 8 números',
-        'vencimento.required' => 'Campo vencimento é obrigatório',
+        'nome.required' => 'Campo nome é obrigatório!',
+        'valor.required' => 'Campo valor é obrigatório!',
+        'valor.max' => 'Campo valor  só pode te no máximo 8 números!',
+        'vencimento.required' => 'Campo vencimento é obrigatório!',
        ]; 
     }
 }

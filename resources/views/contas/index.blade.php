@@ -44,12 +44,8 @@
             </span>
         </div>
 
-        {{-- Verificar se existe a sessão success e imprimir o valor --}}
-        @if (session('success'))
-        <div class="alert alert-success m-3" role="alert">
-            {{ session('success') }}
-          </div>
-        @endif
+        {{-- Alertar de sucesso --}}
+        <x-alert />
 
         <div class="card-body">
             <table class="table">
