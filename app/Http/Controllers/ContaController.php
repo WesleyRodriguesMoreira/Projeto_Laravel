@@ -28,6 +28,7 @@ class ContaController extends Controller
         ->when($request->filled('data_fim'), function($whenQuery) use ($request){
             $whenQuery->where('vencimento', '<=', \Carbon\Carbon::parse($request->data_fim)->format('Y-m-d'));
         })
+        ->with('situacaoConta')
 
         // Organizar os registros realizando uma paginação
         ->orderByDesc('created_at')->paginate(3)->withQueryString();
