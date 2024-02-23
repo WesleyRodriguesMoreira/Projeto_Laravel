@@ -18,25 +18,37 @@
             <form class="row g-3" action="{{ route('conta.store') }}" method="POST">
                 @csrf
 
-                <div class="col-12">
+                <div class="col-md-12 col-sm-12">
                     <label for="nome" class="form-label">Nome da conta</label>
                     <input type="text" class="form-control" name="nome" id="nome" placeholder="Nome da conta"
                         value="{{ old('nome') }}">
                 </div>
 
-                <div class="col-12">
+                <div class="col-md-4 col-sm-12">
                     <label for="valor" class="form-label">Valor da conta</label>
                     <input type="text" class="form-control" name="valor" id="valor" placeholder="Valor da conta"
                         value="{{ old('valor') }}">
                 </div>
 
-                <div class="col-12">
-                    <label for="vencimento" class="form-label">Data da conta</label>
+                <div class="col-md-4 col-sm-12">
+                    <label for="vencimento" class="form-label">Vencimento</label>
                     <input type="date" class="form-control" name="vencimento" id="vencimento"
                         value="{{ old('vencimento') }}">
                 </div>
 
-                <div class="col-12">
+                <div class="col-md-4 col-sm-12">
+                    <label for="situacao_conta_id" class="form-label">Situação da conta</label>
+                    <select name="situacao_conta_id" id="situacao_conta_id" class="form-select">
+                        <option value="">Selecione</option>
+                        @forelse ($situacoesContas as $situacaoConta)
+                            <option value="{{ $situacaoConta->id}}" {{ old('situacao_conta_id') == $situacaoConta->id ? 'selected' : ''}}>{{ $situacaoConta->nome}}</option>
+                        @empty
+                            <option value="">Nenhuma situação da conta encontrada</option>
+                        @endforelse
+                    </select>
+                </div>
+
+                <div class="col-md-4 col-sm-12">
                     <button class="btn btn-success" type="submit">Cadastrar</button>
                 </div>
 

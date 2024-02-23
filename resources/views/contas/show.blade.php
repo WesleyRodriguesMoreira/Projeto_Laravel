@@ -25,8 +25,10 @@
                 <dd class="col-sm-9">{{ 'R$ ' . number_format($conta->valor, 2, ',', '.') }}</dd>
 
                 <dt class="col-sm-3">VENCIMENTO:</dt>
-                <dd class="col-sm-9">
-                    {{ \Carbon\Carbon::parse($conta->vencimento)->tz('America/Sao_Paulo')->format('d/m/Y') }}</dd>
+                <dd class="col-sm-9">{{ \Carbon\Carbon::parse($conta->vencimento)->tz('America/Sao_Paulo')->format('d/m/Y') }}</dd>
+
+                <dt class="col-sm-3">Situação:</dt>
+                <dd class="col-sm-9">{!! '<span class="badge text-bg-'.$conta->situacaoConta->cor.'">'.$conta->situacaoConta->nome.'</span>' !!}</dd>
 
                 <dt class="col-sm-3">DATA DE CADASTRO:</dt>
                 <dd class="col-sm-9">
