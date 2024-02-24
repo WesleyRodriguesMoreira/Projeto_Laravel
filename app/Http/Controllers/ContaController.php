@@ -132,7 +132,6 @@ class ContaController extends Controller
     }
 
 
-
     // ===Excluir os dados do banco de dados===
     public function destroy(Conta $conta)
     {
@@ -151,6 +150,7 @@ class ContaController extends Controller
 
      }
     }
+
 
     // ===Gera um pdf com base na quantidade registros===
     public function gerarPdf(Request $request){
@@ -181,5 +181,31 @@ class ContaController extends Controller
         'totalValor' => $totalValor
         ])->setPaper('a4', 'portrait');
        return $pdf->download('listar_contas.pdf');
+    }
+
+
+    // === Edição da situção da conta
+    public function changeSituation(Conta $conta){
+        try{
+            // Editar as informações do registro no banco de dados
+            $conta->update([
+                'situacao_conta_id' => $conta->situacao_conta_id == 1 ? 2 : 1,
+            ]);
+
+            // Salvar log
+            Log::info('Situação da conta editada com sucesso', ['id' => $conta->id, 'conta' => $conta]);
+
+            // Redirecionar o usuário, enviar a mensagem de sucesso
+            return back()->with('success', 'Situação da conta editada com sucesso!');
+
+        } catch( Exception $e){
+
+            // Salvar log
+            Log::warning('Situação da conta não editada', ['error' => $e->getMessage()]);
+
+            // Redirecionar o usuário, enviar a mensagem de erro
+            return back()->with('error', 'Situação da conta não editada!');
+        }
+        
     }
 }

@@ -39,5 +39,8 @@ Route::put('/update-conta/{conta}', [ContaController::class, 'update'])->name('c
 //Rota de delete
 Route::delete('/destroy-conta/{conta}', [ContaController::class, 'destroy'])->name('conta.destroy');
 
+// Rota de Alteração de Conta
+Route::get('/change-situation-conta', [ContaController::class, 'changeSituation'])->name('conta.change-situation');
+
 //Rota de PDF
 Route::get('/gerar-pdf-conta', [ContaController::class, 'gerarPdf'])->name('conta.gerar-pdf');
