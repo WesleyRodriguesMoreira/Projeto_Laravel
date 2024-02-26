@@ -38,7 +38,7 @@
 
                 <div class="col-md-4 col-sm-12">
                     <label for="situacao_conta_id" class="form-label">Situação da conta</label>
-                    <select name="situacao_conta_id" id="situacao_conta_id" class="form-select">
+                    <select name="situacao_conta_id" id="situacao_conta_id" class="form-select select2">
                         <option value="">Selecione</option>
                         @forelse ($situacoesContas as $situacaoConta)
                             <option value="{{ $situacaoConta->id}}" {{ old('situacao_conta_id') == $situacaoConta->id ? 'selected' : ''}}>{{ $situacaoConta->nome}}</option>
