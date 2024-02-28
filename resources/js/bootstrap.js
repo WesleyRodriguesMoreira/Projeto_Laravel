@@ -5,6 +5,14 @@
  */
 /* Importando o framework bootstrap */
 import 'bootstrap';
+
+// === Importar a jQuery ===
+import jQuery from 'jquery';
+window.$ = jQuery;
+// === Importar o select2 ===
+import  select2  from 'select2'; 
+select2();
+
 import axios from 'axios';
 window.axios = axios;
 
