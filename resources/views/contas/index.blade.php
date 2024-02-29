@@ -40,10 +40,11 @@
             <span>
                 <a class="btn btn-success btn-sm" href="{{ route('conta.create') }}">Cadastrar</a>
                 {{-- <a class="btn btn-warning btn-sm" href="{{ route('conta.gerar-pdf') }}">Gerar PDF</a> --}}
-                <a href="{{ url('gerar-pdf-conta?'. request()->getQueryString())}}" class="btn btn-warning btn-sm">Gerar PDF</a>
+                <a href="{{ url('gerar-pdf-conta?'. request()->getQueryString())}}" class="btn btn-danger btn-sm">Gerar PDF</a>
+                <a href="{{ url('gerar-csv-conta?'. request()->getQueryString())}}" class="btn btn-success btn-sm">Gerar Excel</a>
             </span>
         </div>
-
+   
         {{-- Alertar de sucesso --}}
         <x-alert />
 

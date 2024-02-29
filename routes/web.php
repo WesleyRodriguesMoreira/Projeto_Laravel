@@ -44,3 +44,6 @@ Route::get('/change-situation-conta', [ContaController::class, 'changeSituation'
 
 //Rota de PDF
 Route::get('/gerar-pdf-conta', [ContaController::class, 'gerarPdf'])->name('conta.gerar-pdf');
+
+//Rota de Excel
+Route::get('/gerar-csv-conta', [ContaController::class, 'gerarCsv'])->name('conta.gerar-csv');
