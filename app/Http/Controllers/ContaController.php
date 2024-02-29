@@ -10,6 +10,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
+use PhpOffice\PhpWord\PhpWord;
 
 class ContaController extends Controller
 {
@@ -155,6 +156,31 @@ class ContaController extends Controller
     }
 
 
+    // === Edição da situção da conta ===
+    public function changeSituation(Conta $conta)
+    {
+        try {
+            // Editar as informações do registro no banco de dados
+            $conta->update([
+                'situacao_conta_id' => $conta->situacao_conta_id == 1 ? 2 : 1,
+            ]);
+
+            // Salvar log
+            Log::info('Situação da conta editada com sucesso', ['id' => $conta->id, 'conta' => $conta]);
+
+            // Redirecionar o usuário, enviar a mensagem de sucesso
+            return back()->with('success', 'Situação da conta editada com sucesso!');
+        } catch (Exception $e) {
+
+            // Salvar log
+            Log::warning('Situação da conta não editada', ['error' => $e->getMessage()]);
+
+            // Redirecionar o usuário, enviar a mensagem de erro
+            return back()->with('error', 'Situação da conta não editada!');
+        }
+    }
+
+
     // ===Gera um pdf com base na quantidade registros===
     public function gerarPdf(Request $request)
     {
@@ -188,53 +214,19 @@ class ContaController extends Controller
     }
 
 
-    // === Edição da situção da conta ===
-    public function changeSituation(Conta $conta)
-    {
-        try {
-            // Editar as informações do registro no banco de dados
-            $conta->update([
-                'situacao_conta_id' => $conta->situacao_conta_id == 1 ? 2 : 1,
-            ]);
-
-            // Salvar log
-            Log::info('Situação da conta editada com sucesso', ['id' => $conta->id, 'conta' => $conta]);
-
-            // Redirecionar o usuário, enviar a mensagem de sucesso
-            return back()->with('success', 'Situação da conta editada com sucesso!');
-        } catch (Exception $e) {
-
-            // Salvar log
-            Log::warning('Situação da conta não editada', ['error' => $e->getMessage()]);
-
-            // Redirecionar o usuário, enviar a mensagem de erro
-            return back()->with('error', 'Situação da conta não editada!');
-        }
-    }
-
-
     // === Gera Csv ===
     public function gerarCsv(Request $request)
     {
-        //=== Recupera os registros do banco de dados ===
-
-        // Realizar uma pesquisa pelo nome e manda para o pdf
+        // Recupera os registros do banco de dados
         $contas = Conta::when($request->has('nome'), function ($whenQuery) use ($request) {
             $whenQuery->where('nome', 'like', '%' . $request->nome . '%');
         })
-
-            // Realizar uma pesquisa por datas (Data_Início e Data_Fim) e manda para o pdf
-            ->when($request->filled('data_inicio'), function ($whenQuery) use ($request) {
-                $whenQuery->where('vencimento', '>=', \Carbon\Carbon::parse($request->data_inicio)->format('Y-m-d'));
-            })
-            ->when($request->filled('data_fim'), function ($whenQuery) use ($request) {
-                $whenQuery->where('vencimento', '<=', \Carbon\Carbon::parse($request->data_fim)->format('Y-m-d'));
-            })
-            // Recuperando a situação da conta
-            ->with('situacaoConta')
-
-            // Organizar os registros realizando uma paginação
-            ->orderByDesc('vencimento')->get();
+        ->when($request->filled('data_inicio'), function ($whenQuery) use ($request) {
+            $whenQuery->where('vencimento', '>=', \Carbon\Carbon::parse($request->data_inicio)->format('Y-m-d'));
+        })
+        ->when($request->filled('data_fim'), function ($whenQuery) use ($request) {
+            $whenQuery->where('vencimento', '<=', \Carbon\Carbon::parse($request->data_fim)->format('Y-m-d'));
+        })->with('situacaoConta')->orderByDesc('vencimento')->get();
 
         // Calcula a soma total dos valores
         $totalValor = $contas->sum('valor');
@@ -275,4 +267,79 @@ class ContaController extends Controller
         // Realizando o downloard
         return response()->download($csvNomeArquivo, 'ralatorio_contas'. Str::ulid(). '.csv');
     } 
+
+
+    // === Gerar Word ===
+    public function gerarWord(Request $request){
+
+        // Recupera os registros do banco de dados 
+        $contas = Conta::when($request->has('nome'), function ($whenQuery) use ($request) {
+            $whenQuery->where('nome', 'like', '%' . $request->nome . '%');
+        })
+        ->when($request->filled('data_inicio'), function ($whenQuery) use ($request) {
+            $whenQuery->where('vencimento', '>=', \Carbon\Carbon::parse($request->data_inicio)->format('Y-m-d'));
+        })
+        ->when($request->filled('data_fim'), function ($whenQuery) use ($request) {
+            $whenQuery->where('vencimento', '<=', \Carbon\Carbon::parse($request->data_fim)->format('Y-m-d'));
+        })->with('situacaoConta')->orderByDesc('vencimento')->get();
+
+        // Calcula a soma total dos valores
+        $totalValor = $contas->sum('valor');
+
+        // Criar uma instância do phpWord
+        $phpWord = new PhpWord();
+
+        // Adicionar conteúdo ao documento
+        $section = $phpWord->addSection();
+
+        // Adicionar uma tabela
+        $table = $section->addTable();
+
+        // Configurações da borda
+        $borderStyle = [
+            'borderColor' => '000000',
+            'borderSize' => 6,
+        ];
+
+        // Adicionar o cabeçalho da tabela
+        $table->addRow();
+        $table->addCell(2000, $borderStyle)->addText("#");
+        $table->addCell(2000, $borderStyle)->addText("Nome");
+        $table->addCell(2000, $borderStyle)->addText("Vencimento");  
+        $table->addCell(2000, $borderStyle)->addText("Situação");
+        $table->addCell(2000, $borderStyle)->addText("Valor");
+
+        // ler os  registros do banco
+        $contado = 1;
+        foreach($contas as $conta){
+            $table->addCell(2000, $borderStyle)->addText($contado++);
+            $table->addCell(2000, $borderStyle)->addText($conta->nome);
+            $table->addCell(2000, $borderStyle)->addText(\Carbon\Carbon::parse($conta->vencimento)->tz('America/Sao_Paulo')->format('d/m/Y'));
+            $table->addCell(2000, $borderStyle)->addText($conta->situacaoConta->nome);
+            $table->addCell(2000, $borderStyle)->addText(number_format($conta->valor, 2, ',', '.'));
+        }
+
+        // Adicionar ototal tabela
+        $table->addRow();
+        $table->addCell(2000, $borderStyle)->addText('');
+        $table->addCell(2000, $borderStyle)->addText('');
+        $table->addCell(2000, $borderStyle)->addText('');
+        $table->addCell(2000, $borderStyle)->addText('');
+        $table->addCell(2000, $borderStyle)->addText(number_format($totalValor, 2, ',', '.'));
+
+        // Nome do arquivo
+        $filename = 'relatorio-contas.docx';
+
+        // Caminho do arquivo
+        $savePath = storage_path($filename);
+
+        // Salvar o arquivo
+        $phpWord->save($savePath);
+
+        // Forçar o download do arquivo e excluí-lo após o envio
+        return response()->download($savePath)->deleteFileAfterSend(true);
+
+
+    }
 }
+

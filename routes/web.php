@@ -47,3 +47,6 @@ Route::get('/gerar-pdf-conta', [ContaController::class, 'gerarPdf'])->name('cont
 
 //Rota de Excel
 Route::get('/gerar-csv-conta', [ContaController::class, 'gerarCsv'])->name('conta.gerar-csv');
+
+//Rota de Word
+Route::get('/gerar-word-conta', [ContaController::class, 'gerarWord'])->name('conta.gerar-word');

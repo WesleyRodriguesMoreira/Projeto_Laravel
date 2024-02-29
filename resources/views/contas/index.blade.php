@@ -42,6 +42,7 @@
                 {{-- <a class="btn btn-warning btn-sm" href="{{ route('conta.gerar-pdf') }}">Gerar PDF</a> --}}
                 <a href="{{ url('gerar-pdf-conta?'. request()->getQueryString())}}" class="btn btn-danger btn-sm">Gerar PDF</a>
                 <a href="{{ url('gerar-csv-conta?'. request()->getQueryString())}}" class="btn btn-success btn-sm">Gerar Excel</a>
+                <a href="{{ url('gerar-word-conta?'. request()->getQueryString())}}" class="btn btn-primary btn-sm">Gerar Word</a>
             </span>
         </div>
    
@@ -80,11 +81,12 @@
                                 <a class="btn btn-warning btn-sm me-1" href="{{ route('conta.show', ['conta' => $conta->id]) }}">Visualizar</a>
                                 <a class="btn btn-primary btn-sm me-1" href="{{ route('conta.edit', ['conta' => $conta->id]) }}">Editar</a>
                     
-                                <form id="formExcluir{{$conta->id}}" action="{{ route('conta.destroy', ['conta' => $conta->id]) }}" method="POST">
+                                <form id="formExcluir{{ $conta->id }}"
+                                    action="{{ route('conta.destroy', ['conta' => $conta->id]) }}" method="POST">
                                     @csrf
                                     @method('delete')
-                                    <button class="btn btn-danger btn-sm" type="submit"
-                                        onclick="comfirmarExclusao(event, {{$conta->id}})">Deletar</button>
+                                    <button type="submit" class="btn btn-danger btn-sm me-1 btnDelete"
+                                        data-delete-id="{{ $conta->id }}">Apagar</button>
                                 </form>
 
                             </td>
