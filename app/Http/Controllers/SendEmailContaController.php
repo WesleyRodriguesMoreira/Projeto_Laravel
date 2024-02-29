@@ -21,7 +21,7 @@ class SendEmailContaController extends Controller
             
             // Recuperar as contas do banco de dados
             $contas = Conta::whereData('vencimento', $dataAtual)->with('situacaoConta')->get();
-            dd($contas);
+            
             // Enviar os dados para o e-mail
             Mail::to(env('MAIL_TO'))->send( new SendMailContarPagar($contas));
 

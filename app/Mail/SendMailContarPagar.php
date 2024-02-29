@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -26,8 +27,10 @@ class SendMailContarPagar extends Mailable
      */
     public function envelope(): Envelope
     {
+        // Obter a data atual
+        $dataatual = Carbon::now()->format('d/m/Y');
         return new Envelope(
-            subject: 'Send Mail Contar Pagar',
+            subject: 'Conta do dia'. $dataatual,
         );
     }
 
@@ -37,7 +40,7 @@ class SendMailContarPagar extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'view.name',
+            view: 'emails.SendEmailContaPagar',
         );
     }
 
