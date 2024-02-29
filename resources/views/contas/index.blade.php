@@ -39,7 +39,7 @@
             <span>Lista Contas</span>
             <span>
                 <a class="btn btn-success btn-sm" href="{{ route('conta.create') }}">Cadastrar</a>
-                {{-- <a class="btn btn-warning btn-sm" href="{{ route('conta.gerar-pdf') }}">Gerar PDF</a> --}}
+                <a href="{{ route('conta.send-email-pendente')}}" class="btn btn-info btn-sm">Enviar E-mail</a>
                 <a href="{{ url('gerar-pdf-conta?'. request()->getQueryString())}}" class="btn btn-danger btn-sm">Gerar PDF</a>
                 <a href="{{ url('gerar-csv-conta?'. request()->getQueryString())}}" class="btn btn-success btn-sm">Gerar Excel</a>
                 <a href="{{ url('gerar-word-conta?'. request()->getQueryString())}}" class="btn btn-primary btn-sm">Gerar Word</a>

@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\ContaController;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\SendEmailContaController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -50,3 +50,6 @@ Route::get('/gerar-csv-conta', [ContaController::class, 'gerarCsv'])->name('cont
 
 //Rota de Word
 Route::get('/gerar-word-conta', [ContaController::class, 'gerarWord'])->name('conta.gerar-word');
+
+//Rota de E-mail
+Route::get('/send-email-pendente-conta', [SendEmailContaController::class, 'SendEmailPendenteConta'])->name('conta.send-email-pendente');
